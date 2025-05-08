@@ -1,7 +1,9 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const connectString = 'mongodb://localhost:27017/ecommerce';
+const { db: { host, name, port } } = require('../config/config.mongodb');
+const connectString = `mongodb://${host}:${port}/${name}`;
+
 const { countConnect } = require('../helpers/check.connect');
 
 class Database { //Singleton class to ensure only one instance of the database connection is created

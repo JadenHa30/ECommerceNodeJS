@@ -1,3 +1,4 @@
+require("dotenv").config(); // load env variables
 const express = require('express');
 const app = express();
 const helmet = require("helmet"); // security middleware, cover server vulnerabilities

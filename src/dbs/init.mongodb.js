@@ -10,8 +10,11 @@ class Database { //Singleton class to ensure only one instance of the database c
   }
 
   connect(type = 'mongodb') {
-    mongoose.connect(connectString, { useNewUrlParser: true, useUnifiedTopology: true })
-      .then(() => {
+    mongoose.connect(connectString, {
+      maxPoolSize: 10, // Maximum number of connections in the pool
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }).then(() => {
         console.log('MongoDB connected', countConnect());
       })
       .catch((err) => {

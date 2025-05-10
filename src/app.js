@@ -17,9 +17,7 @@ require("./dbs/init.mongodb");
 // checkOverload();
 
 // routes
-app.get("/", (req, res) => {
-  res.send("Welcome to the E-commerce API");
-});
+app.use('/', require("./routes"));
 
 // error handling
 

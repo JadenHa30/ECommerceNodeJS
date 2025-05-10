@@ -1,5 +1,6 @@
 'use strict';
 
+const AccessService = require("../services/access.service");
 class AccessController {
 
     signup = async (req, res, next) => {
@@ -9,11 +10,7 @@ class AccessController {
                 200 OK
                 201 CREATED
             */
-            return res.status(201).json({
-                code: '20001', //self-defined code for success,
-                message: 'Create new shop successfully',
-                metadata: { userid: 1 }
-            });
+            return res.status(201).json(await AccessService.signup(req.body));
         } catch (error) {
             next(error);
         }

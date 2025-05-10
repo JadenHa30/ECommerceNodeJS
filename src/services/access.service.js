@@ -38,25 +38,28 @@ class AccessService {
 
             if (newShop) {
                 //symmetric-key algorithms
-                const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
-                    modulusLength: 4096,
-                    publicKeyEncoding: {
-                        type: 'pkcs1',
-                        format: 'pem', // Ensure PEM format
-                    },
-                    privateKeyEncoding: {
-                        type: 'pkcs1',
-                        format: 'pem', // Ensure PEM format
-                    },
-                });
+                // const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
+                //     modulusLength: 4096,
+                //     publicKeyEncoding: {
+                //         type: 'pkcs1',
+                //         format: 'pem', // Ensure PEM format
+                //     },
+                //     privateKeyEncoding: {
+                //         type: 'pkcs1',
+                //         format: 'pem', // Ensure PEM format
+                //     },
+                // });
+                const privateKey = crypto.randomBytes(64).toString('hex');
+                const publicKey = crypto.randomBytes(64).toString('hex');
 
                 console.log('keys: ' , {privateKey, publicKey});
-                const publicKeyString = await KeyTokenService.createKeyToken({
+                const keyStore = await KeyTokenService.createKeyToken({
                     userId: newShop._id,
                     publicKey,
+                    privateKey,
                 });
 
-                if (!publicKeyString) {
+                if (!keyStore) {
                     return {
                         code: 'xxxx',
                         message: 'Failed to create public key',
@@ -64,13 +67,11 @@ class AccessService {
                     }
                 }
 
-                const publicKeyObject = crypto.createPublicKey(publicKeyString);
-
                 //step 3: create a new key token
                 const tokens = await createTokenPair({
                     userId: newShop._id,
                     email,
-                }, publicKeyObject, privateKey);
+                }, publicKey, privateKey);
 
                 return {
                     code: '201',

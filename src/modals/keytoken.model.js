@@ -20,7 +20,11 @@ var keyTokenSchema = new Schema({
         type:String,
         required:true,
     },
-    refershToken:{
+    refreshToken:{
+        type: String,
+        required: true,
+    },
+    refreshTokensUsed:{
         type: Array,
         default: [],
     },

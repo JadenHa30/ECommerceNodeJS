@@ -3,6 +3,12 @@
 const AccessService = require("../services/access.service");
 const { OK, Created } = require("../core/success.response");
 class AccessController {
+    login = async (req, res, next) => {
+        new OK({
+            metadata: await AccessService.login(req.body),
+            message: 'Login success',
+        }).send(res);
+    }
 
     signup = async (req, res, next) => {
             console.log(`[P]::signup::`, req.body)

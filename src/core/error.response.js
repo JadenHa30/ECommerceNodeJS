@@ -1,5 +1,7 @@
 'use strict';
 
+const httpStatus = require('../../utils/httpStatusCode');
+
 const StatusCode = {
     NO_CONTENT: 204,
     BAD_REQUEST: 400,
@@ -37,7 +39,14 @@ class BadRequestError extends ErrorResponse {
     }
 }
 
+class UnauthorizedError extends ErrorResponse {
+    constructor(message = httpStatus.ReasonPhrases.UNAUTHORIZED, statusCode = httpStatus.StatusCodes.UNAUTHORIZED) {
+        super(message, statusCode);
+    }
+}
+
 module.exports = {
     ConflictRequestError,
     BadRequestError,
+    UnauthorizedError,
 };

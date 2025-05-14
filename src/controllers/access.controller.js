@@ -3,6 +3,13 @@
 const AccessService = require("../services/access.service");
 const { OK, Created } = require("../core/success.response");
 class AccessController {
+    logout = async (req, res, next) => {
+        new OK({
+            metadata: await AccessService.logout({ keyStore: req.keyStore }),
+            message: 'Logout success',
+        }).send(res);
+    }
+    
     login = async (req, res, next) => {
         new OK({
             metadata: await AccessService.login(req.body),

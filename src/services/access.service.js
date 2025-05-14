@@ -1,5 +1,5 @@
 'use strict';
-const shopModel = require('../modals/shop.model');
+const shopModel = require('../models/shop.model');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const KeyTokenService = require('./keyToken.service');
@@ -16,6 +16,12 @@ const RoleShop = {
 }
 
 class AccessService {
+
+    static logout = async ({ keyStore, password, refreshToken = null }) => {
+        const delKey  = await KeyTokenService.removeKeyById(keyStore._id);
+        console.log('delKey: ', delKey);
+        return delKey;
+    }
 
     /*
         1 - check if email already exists

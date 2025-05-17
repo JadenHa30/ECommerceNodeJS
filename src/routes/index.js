@@ -9,8 +9,6 @@ const router = express.Router();
 // router.use(permission('0000'));
 
 router.use('/v1/api', require('./access'));
-// router.get('/', (req, res) => {
-//     res.send('Welcome to the E-commerce API');
-// });
+router.use('/v1/api/product', require('./product'));
 
 module.exports = router

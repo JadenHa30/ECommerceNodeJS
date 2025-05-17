@@ -18,24 +18,17 @@ const RoleShop = {
 
 class AccessService {
 
-    static handleRefreshToken = async ({ refreshToken }) => { // when access token expired, this function will be called to distribute new AT and RT
-        // check if this token was used
-        const foundToken = await KeyTokenService.findKeyByRefreshTokenUsed(refreshToken);
-        if (foundToken) {
-            //decode to get userId and email
-            const { userId, email } = await verifyJWT(refreshToken, foundToken.privateKey);
+    static handleRefreshToken = async ({ refreshToken, user, keyStore }) => { // when access token expired, this function will be called to distribute new AT and RT
+        const { userId, email } = user;
+        if (keyStore.refreshTokenUsed?.includes(refreshToken)) {
             await KeyTokenService.deleteKeyById(userId); // delete all token in KeyStore
             throw new ForbiddenError('Something went wrong !! Please login again');
         }
 
-        // check if this token is valid
-        const holderToken = await KeyTokenService.findKeyByRefreshToken(refreshToken);
-        if (!holderToken) {
+        if (keyStore.refreshToken !== refreshToken) {
             throw new UnauthorizedError('User not registered');
         }
 
-        //verify token
-        const { userId, email } = await verifyJWT(refreshToken, holderToken.privateKey);
         //check if userId in db
         const foundShop = await findByEmail({email});
         if (!foundShop) {
@@ -43,10 +36,10 @@ class AccessService {
         }
 
         //generate new tokens
-        const newTokens = await createTokenPair({ userId, email }, holderToken.publicKey, holderToken.privateKey);
+        const newTokens = await createTokenPair({ userId, email }, keyStore.publicKey, keyStore.privateKey);
         //update refreshTokenUsed
         await keytokenModel.updateOne(
-            { _id: holderToken._id },
+            { _id: userId },
             {
                 $set: {
                     refreshToken: newTokens.refreshToken,
@@ -58,7 +51,7 @@ class AccessService {
         );
 
         return {
-            user: { userId, email },
+            user,
             tokens: newTokens,
         };
     }

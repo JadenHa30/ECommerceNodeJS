@@ -8,6 +8,7 @@ const HEADER = {
     API_KEY: 'x-api-key',
     CLIENT_ID: 'x-client-id',
     AUTHORIZATION: 'authorization',
+    REFRESH_TOKEN: 'x-refresh-token',
 }
 
 const createTokenPair = async (payload, publicKey, privateKey) => {
@@ -41,7 +42,7 @@ const createTokenPair = async (payload, publicKey, privateKey) => {
     }
 }
 
-const authentication = asyncHandler( async (req, res, next) => {
+const authenticationV2 = asyncHandler( async (req, res, next) => {
     /* 
         1. Check userId missing??
         2. get accessToken
@@ -63,6 +64,21 @@ const authentication = asyncHandler( async (req, res, next) => {
     }
 
     //3
+    if (req.headers[HEADER.REFRESH_TOKEN]) {
+        try {
+            const refreshToken = req.headers[HEADER.REFRESH_TOKEN];
+            const decodeUser = JWT.verify(refreshToken, keyStore.privateKey);
+            if (userId !== decodeUser.userId) {
+                throw new UnauthorizedError('Invalid Request');
+            }
+            req.keyStore = keyStore;
+            req.user = decodeUser;
+            req.refreshToken = refreshToken;
+            return next();
+        } catch (error) {
+            
+        }
+    }
     const accessToken = req.headers[HEADER.AUTHORIZATION];
     if (!accessToken) {
         throw new UnauthorizedError('Invalid Request. UNAUTHORIZATION HEADER');
@@ -87,6 +103,6 @@ const verifyJWT = async (token, keySecret) => {
 
 module.exports = {
     createTokenPair,
-    authentication,
+    authenticationV2,
     verifyJWT,
 }

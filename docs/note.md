@@ -13,3 +13,6 @@
 **version 1:
 - when access token is expired, user needs to send refresh token to server to request a new key pair.
 - to prevent token from being stolen, we need to store used refresh token in an array, if it was used to request new key pair, it can be considered suspicious attempt.
+**version 2:
+    Known issue: router.use(authentication) which requires accessToken, placed before handleRefreshToken. In this case, accessToken is expired and checking it in auth is none-sense.
+- 

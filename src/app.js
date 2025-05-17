@@ -33,6 +33,7 @@ app.use((error, req, res, next) => {
     return res.status(statusCode).json({
         status: 'error',
         code: statusCode,
+        stack: process.env.NODE_ENV === 'production' ? null : error.stack,
         message,
     });
 });

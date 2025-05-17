@@ -15,4 +15,7 @@
 - to prevent token from being stolen, we need to store used refresh token in an array, if it was used to request new key pair, it can be considered suspicious attempt.
 **version 2:
     Known issue: router.use(authentication) which requires accessToken, placed before handleRefreshToken. In this case, accessToken is expired and checking it in auth is none-sense.
-- 
+
+#commit f08c4d1630cd236052ed955a62e3872e7a54a0b7: Optimize Product API
+- update userId from req (which is passed from auth) into product_shop
+- update parent Product _id = child Product _id (ex: Product._id = Electronics._id)

@@ -1,7 +1,8 @@
 'use strict';
 
 const { product, clothing, electronic, furniture } = require('../models/product.model');
-const { BadRequestError } = require('../core/error.response')
+const { BadRequestError } = require('../core/error.response');
+const { findAllDraftForShop } = require('../models/repository/product.repo');
 
 //Factory class to create product
 class ProductFactory {
@@ -20,6 +21,12 @@ class ProductFactory {
         if (!productClass) throw new BadRequestError(`Invalid product type ${type}`);
 
         return new productClass(payload).createProduct();
+    }
+
+    //QUERY
+    static async findAllDraftForShop({ product_shop, limit = 50, skip = 0 }) {
+        const query = { product_shop, isDraft: true };
+        return await findAllDraftForShop({ query, limit, skip });
     }
 }
 

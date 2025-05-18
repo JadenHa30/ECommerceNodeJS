@@ -19,3 +19,13 @@
 #commit f08c4d1630cd236052ed955a62e3872e7a54a0b7: Optimize Product API
 - update userId from req (which is passed from auth) into product_shop
 - update parent Product _id = child Product _id (ex: Product._id = Electronics._id)
+
+#Get a list of the seller's draft
+**limit Parameter
+- Purpose: Controls the maximum number of documents returned in a single query
+- Default Value: 50 (as specified in the parameter destructuring)
+- Example: If you have 200 draft products but only want to show 20 at a time, you'd set limit: 20
+**skip Parameter
+- Purpose: Determines how many documents to skip from the beginning of the result set
+- Default Value: 0 (as specified in the parameter destructuring)
+- Example: If you're on page 2 and showing 20 products per page, you'd set skip: 20 to skip the first 20 products

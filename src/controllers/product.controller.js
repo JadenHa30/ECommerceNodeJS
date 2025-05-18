@@ -13,6 +13,23 @@ class ProductController {
             }),
         }).send(res);
    };
+
+   //QUERY
+   /*
+   * @desc: Get all draft product for shop
+   * @param {Number} limit
+   * @param {Number} skip
+   * @return: { JSON } list of draft product
+   */
+    getAllDraftForShop = async (req, res, next) => {
+        new OK({
+            message: "Get all draft product for shop",
+            metadata: await ProductService.findAllDraftForShop({
+                product_shop: req.user.userId,
+            }),
+        }).send(res);
+    }
+    //END QUERY
 }
 
 module.exports = new ProductController();

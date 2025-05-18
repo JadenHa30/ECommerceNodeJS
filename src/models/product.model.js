@@ -1,6 +1,7 @@
 'use strict';
 
 const { Schema, model, Types} = require('mongoose'); // Erase if already required
+const slugify = require('slugify');
         
 const DOCUMENT_NAME = 'Product';
 const COLLECTION_NAME = 'Products';
@@ -40,9 +41,40 @@ var productSchema = new Schema({
         type: Schema.Types.Mixed,
         required: true,
     },
+    product_slug: String,
+    product_ratingAverage: {
+        type: Number,
+        default: 1,
+        min: [1, 'Rating must be above 1.0'],
+        max: [5, 'Rating must be under 5.0'],
+        set: val => Math.round(val * 10) / 10,
+    },
+    product_variations: {
+        type: Array,
+        default: [],
+    },
+    isDraft: { //draft product --> not published
+        type: Boolean,
+        default: false,
+        index: true,
+        select: false, //document will not be selected by default (ex: when using find() or findOne())
+    },
+    unPublished: { //unpublished product --> not visible to customers
+        type: Boolean,
+        default: false,
+        index: true,
+        select: false,
+    },
 }, {
     collection: COLLECTION_NAME,
     timestamps: true,
+});
+
+//Document Middleware: it will be executed before saving the document
+productSchema.pre('save', function(next) {
+    //this keyword is pointing to the current product
+    this.product_slug = slugify(this.product_name, { lower: true });
+    next();
 });
 
 const clothingSchema = new Schema({

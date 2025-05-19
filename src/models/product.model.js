@@ -55,11 +55,11 @@ var productSchema = new Schema({
     },
     isDraft: { //draft product --> not published
         type: Boolean,
-        default: false,
+        default: true,
         index: true,
         select: false, //document will not be selected by default (ex: when using find() or findOne())
     },
-    unPublished: { //unpublished product --> not visible to customers
+    isPublished: {
         type: Boolean,
         default: false,
         index: true,

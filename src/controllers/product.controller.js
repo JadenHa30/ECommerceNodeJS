@@ -14,6 +14,16 @@ class ProductController {
         }).send(res);
    };
 
+   updatePublishProductByShop = async (req, res) => {
+        new OK({
+            message: "Update product successfully",
+            metadata: await ProductService.updatePublishProductByShop({
+                product_shop: req.user.userId,
+                product_id: req.params.id,
+            }),
+        }).send(res);
+   }
+
    //QUERY
    /*
    * @desc: Get all draft product for shop
@@ -24,7 +34,16 @@ class ProductController {
     getAllDraftForShop = async (req, res, next) => {
         new OK({
             message: "Get all draft product for shop",
-            metadata: await ProductService.findAllDraftForShop({
+            metadata: await ProductService.getAllDraftForShop({
+                product_shop: req.user.userId,
+            }),
+        }).send(res);
+    }
+
+    getAllPublishForShop = async (req, res, next) => {
+        new OK({
+            message: "Get all publish product for shop",
+            metadata: await ProductService.getAllPublishForShop({
                 product_shop: req.user.userId,
             }),
         }).send(res);

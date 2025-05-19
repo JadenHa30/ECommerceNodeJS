@@ -58,6 +58,15 @@ class ProductController {
             }),
         }).send(res);
     }
+
+    getListSearchProducts = async (req, res, next) => {
+        new OK({
+            message: "Get list search products",
+            metadata: await ProductService.getListSearchProducts({
+                keySearch: req.params.keySearch,
+            }),
+        }).send(res);
+    }
     //END QUERY
 }
 

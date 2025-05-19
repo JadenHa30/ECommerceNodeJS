@@ -9,6 +9,7 @@ const { authenticationV2 } = require('../../auth/authUtils');
 router.use(authenticationV2);
 router.post('', asyncHandler(productController.createProduct));
 router.put('/published/:id', asyncHandler(productController.updatePublishProductByShop));
+router.put('/unpublished/:id', asyncHandler(productController.updateUnpublishProductByShop));
 
 //QUERY
 router.get('/draft/all', asyncHandler(productController.getAllDraftForShop));

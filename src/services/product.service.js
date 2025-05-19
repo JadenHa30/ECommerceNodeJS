@@ -2,7 +2,7 @@
 
 const { product, clothing, electronic, furniture } = require('../models/product.model');
 const { BadRequestError } = require('../core/error.response');
-const { findAllDraftForShop, publishProductByShop, findAllPublishForShop } = require('../models/repository/product.repo');
+const { findAllDraftForShop, publishProductByShop, findAllPublishForShop, unpublishProductByShop } = require('../models/repository/product.repo');
 
 //Factory class to create product
 class ProductFactory {
@@ -26,6 +26,10 @@ class ProductFactory {
     //PUT
     static async updatePublishProductByShop({ product_shop, product_id }) {
         return await publishProductByShop({ product_shop, product_id });
+    }
+
+    static async updateUnpublishProductByShop({ product_shop, product_id }) {
+        return await unpublishProductByShop({ product_shop, product_id });
     }
 
     //QUERY

@@ -36,8 +36,23 @@ const publishProductByShop = async ({ product_shop, product_id }) => {
     return modifiedCount;
 }
 
+const unpublishProductByShop = async ({ product_shop, product_id }) => {
+    const foundShop = await product.findOne({ 
+        product_shop: new ObjectId(product_shop),
+        _id: new ObjectId(product_id)
+     });
+    if (!foundShop) return null;
+
+    foundShop.isDraft = true;
+    foundShop.isPublished = false;
+    const { modifiedCount } = await foundShop.updateOne(foundShop);
+
+    return modifiedCount;
+}
+
 module.exports = {
     findAllDraftForShop,
     publishProductByShop,
     findAllPublishForShop,
+    unpublishProductByShop,
 };

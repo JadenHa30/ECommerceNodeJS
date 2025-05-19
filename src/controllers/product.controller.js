@@ -24,6 +24,16 @@ class ProductController {
         }).send(res);
    }
 
+    updateUnpublishProductByShop = async (req, res) => {
+        new OK({
+            message: "Update product successfully",
+            metadata: await ProductService.updateUnpublishProductByShop({
+                product_shop: req.user.userId,
+                product_id: req.params.id,
+            }),
+        }).send(res);
+   }
+
    //QUERY
    /*
    * @desc: Get all draft product for shop
